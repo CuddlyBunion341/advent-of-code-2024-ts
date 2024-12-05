@@ -20,6 +20,17 @@
 // Scan the corrupted memory for uncorrupted mul instructions. What do you get if you add up all of the results of the multiplications?
 //
 
-const file = await Bun.file("./input.txt").text()
-const instructions = file.findAll(/mul\((\d{1-3}),(\d{1-3})\)
-console.log(file)
+const text = await Bun.file("./input.txt").text();
+
+const value = text
+  .match(/mul\(\d\d\d,\d\d\d\)/g)
+  .map((exp) =>
+    /mul\((\d\d\d),(\d\d\d)\)/g
+      .exec(exp)
+      .slice(1, 3)
+      .map((v) => parseInt(v))
+      .reduce((a, v) => a * v),
+  )
+  .reduce((a, v) => a + v);
+
+console.log(value);
