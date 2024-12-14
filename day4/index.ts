@@ -11,7 +11,7 @@ const rangeStr = (count: number, call: (i: number) => string) => Array.from({ le
 const getMatches = (str: String) => [...str.matchAll(new RegExp(TERM, "g"))]
 const range = (length: number, call: (i: number) => any) => Array.from({length}).map((_, i) => call(i))
 
-const xmasStrings: String[] = []
+let xmasStrings: String[] = []
 
 const matricies = [
   rows,
@@ -21,10 +21,13 @@ const matricies = [
 ]
 
 range(size - TERM.length - 1, (a) => {
-  matricies.forEach((matrix, mi) => {
-    if (mi % 2 === 0 && a === 0) return
-    xmasStrings.push(rangeStr(size, (i) => matrix[i][a + i]))
-  })
+  xmasStrings = [
+    ...xmasStrings,
+    ...matricies.map((matrix, mi) => {
+      if (mi % 2 === 0 && a === 0) return
+        return rangeStr(size, (i) => matrix[i][a + i])
+    }).filter(v => v !== undefined)
+  ]
 })
 
 for (let a = 0; a < size; a++) {
