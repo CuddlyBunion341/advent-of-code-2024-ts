@@ -2,20 +2,22 @@ const file = await Bun.file("./input2").text()
 const rows = file.split("\n")
 
 const size = rows[0].length
-while(rows.length > size) rows.pop()
+while (rows.length > size) rows.pop()
 
-let totalMatchCount = 0
+const word = "XMAS"
 
-const findMatches = (row) => {
+const findMatches = (row: String) => {
   let matches = row.match(/XMAS/g)
   if (matches) return matches.length
-    return 0
+  return 0
 }
 
-const transpose = (matrix: String[]) => matrix.map((s,i) => s.split("").map((_,j) => matrix[j][i]).join(""))
-const reverse = (str) => str.split("").reverse().join("")
+const transpose = (matrix: String[]) => matrix.map((s, i) => s.split("").map((_, j) => matrix[j][i]).join(""))
+const reverse = (str: String) => str.split("").reverse().join("")
 
 const trows = transpose(rows)
+
+let totalMatchCount = 0
 
 for (let r = 0; r < size; r++) {
   totalMatchCount += findMatches(rows[r])
@@ -24,8 +26,59 @@ for (let r = 0; r < size; r++) {
   totalMatchCount += findMatches(reverse(trows[r]))
 }
 
-for (let dsX = 0; dsX < size; dsX++) {
-  for (let dsY = 0; dsY < size; dsY++) {
+let otherInput = [
+  "   x x x",
+  "   x x x",
+  "  m m m ",
+  " a a a  ",
+  "s s s   ",
+  "  m m m ",
+  " a a a  ",
+  "s s s   ",
+]
+
+const printBox = (str: String) => [...str.split("")].join(" ")
+
+const reversed = otherInput.map(row => {
+  let el = [...row.split("")]
+  el.reverse()
+  return el.join("")
+})
+
+otherInput = reversed;
+
+otherInput .forEach(el => {
+  console.log(printBox(el.replaceAll(" ", ".")))
+})
+
+console.log('----')
+
+let serachTerm = "xmas"
+// let otherInput = transpose(otherInput)
+
+
+let y = 0;
+for (let x = 0; x < otherInput[0].length - serachTerm.length; x++) {
+  let diagonal = ""
+  for (let d = 0; d < otherInput[0].length - x; d++) {
+    diagonal += otherInput[y + d][x + d];
+  }
+  console.log(printBox(diagonal.replaceAll(" ", ".")))
+}
+
+console.log('___')
+
+let x = 0;
+for (let y = 0; y < otherInput.length; y++) {
+  let diagonal = ""
+  for (let d = 0; d < otherInput[0].length - y; d++) {
+    diagonal += otherInput[y + d][x + d];
+  }
+  console.log(printBox(diagonal.replaceAll(" ", ".")))
+}
+
+for (let dsX = 0; dsX < size - (word.length - 1); dsX++) {
+  for (let dsY = 0; dsY < size - (word.length - 1); dsY++) {
 
     let diagonal = ""
     let tdiagonal = ""
