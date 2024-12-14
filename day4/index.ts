@@ -9,7 +9,7 @@ const transpose = (matrix: String[]) => matrix.map((s, i) => s.split("").map((_,
 const reverse = (str: String) => str.split("").reverse().join("")
 const rangeStr = (count: number, call: (i: number) => string) => Array.from({ length: count }).map((_, i) => call(i)).join("")
 const getMatches = (str: String) => [...str.matchAll(new RegExp(TERM, "g"))]
-const range = (length: number, call: (i: number) => any) => Array.from({length}).map((_, i) => call(i))
+const range = (length: number, call: (i: number) => any) => Array.from({ length }).map((_, i) => call(i))
 
 let xmasStrings: String[] = []
 
@@ -20,20 +20,16 @@ const matricies = [
   transpose(rows.map(reverse)),
 ]
 
-range(size - TERM.length - 1, (a) => {
-  xmasStrings = [
-    ...xmasStrings,
-    ...matricies.map((matrix, mi) => {
+xmasStrings = [
+  ...range(size - TERM.length - 1, (a) =>
+    matricies.map((matrix, mi) => {
       if (mi % 2 === 0 && a === 0) return
-        return rangeStr(size, (i) => matrix[i][a + i])
+      return rangeStr(size, (i) => matrix[i][a + i])
     }).filter(v => v !== undefined)
-  ]
-})
-
-for (let a = 0; a < size; a++) {
-  xmasStrings.push(matricies[0][a])
-  xmasStrings.push(matricies[1][a])
-}
+  ),
+  ...range(size, i => matricies[0][i]),
+  ...range(size, i => matricies[1][i]),
+].flat()
 
 const totalMatches = xmasStrings.map(v => [v, reverse(v)].map(n => getMatches(n).length).reduce((a, v) => a + v)).reduce((sum, val) => sum + val)
 
