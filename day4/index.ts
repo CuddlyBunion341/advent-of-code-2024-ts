@@ -24,6 +24,6 @@ const totalMatches = [
   ),
   ...range(size, i => matricies[0][i]),
   ...range(size, i => matricies[1][i]),
-].flat().map(v => [v, reverse(v)].map(n => getMatches(n).length).reduce((a, v) => a + v)).reduce((s, v) => s + v)
+].flat().map(v => [v, reverse(v)].map(n => getMatches(n).length)).flat().reduce((s, v) => s + v)
 
 console.log(totalMatches)
