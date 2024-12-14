@@ -13,3 +13,16 @@ const findMatches = (row: String) => {
 const transpose = (matrix: String[]) => matrix.map((s, i) => s.split("").map((_, j) => matrix[j][i]).join(""))
 const reverse = (str: String) => str.split("").reverse().join("")
 const format = (str: String) => [...str.split("")].join(" ")
+const output = (matrix: String[]) => { matrix.forEach(row => console.log(format(row))); console.log('---') }
+const print = (str: String) => console.log(format(str))
+
+output(rows)
+output(transpose(rows))
+
+for (let a = 0; a < size - TERM.length; a++) {
+  let diagonal = ""
+  for (let d = 0; d < size - a; d++) {
+    diagonal += rows[d][a + d]
+  }
+  print(diagonal)
+}
